@@ -37,6 +37,71 @@ npm start
 | `npm run typecheck` | `tsc --noEmit`                        |
 | `npm run lint`      | ESLint                                |
 
+## Deploy on Vercel
+
+The repo deploys as-is: no environment variables, no database, no server
+functions and no external services. Vercel auto-detects Next.js.
+
+1. **Add New → Project** in Vercel and import `AmanaLink/Demo`.
+2. Keep the detected settings: framework **Next.js**, root `.`, build
+   `npm run build`, install `npm install`, output `.next`.
+3. Node.js **22.x** is recommended (`engines` requires `>=20.9.0`). Deploy.
+
+Or from the CLI:
+
+```bash
+npx vercel          # preview deployment
+npx vercel --prod   # production deployment
+```
+
+Notes:
+
+- No `vercel.json` is needed.
+- Every route is statically prerendered; there is no runtime data fetching.
+- The PDF is a committed static asset in `public/`, so it ships with the build at
+  `/amanalink-deck.pdf`.
+- `next.config.ts` uses Next 16 cache components and partial prefetching; both are
+  supported by the Vercel build.
+
+## PDFs
+
+Two documents are served from `public/` and linked in the UI:
+
+- **Plan summary** — `public/escrow-platform-summary.pdf` (5 pages). The header
+  *Plan summary* button and the footer link download it. It is an authored
+  document; the root file `escrow-platform-summary.pdf` is the source copy.
+- **Prototype brief** — `public/amanalink-deck.pdf` (7 pages), built from the same
+  copy, state machine and mock ledger as the app, so the transition table,
+  evidence counts and ledger hashes match the demo. Linked from the footer;
+  print source view at `/deck`.
+
+### Regenerate the prototype brief
+
+The source view lives at `/deck` (print CSS included). To regenerate after
+changing copy, run the production build and print that page:
+
+1. `npm run build && npm start`
+2. Open `http://localhost:3000/deck`
+3. Print → Save as PDF → A4, margins **None**, background graphics **on**
+
+For automation, a Playwright one-off (not a project dependency):
+
+```js
+// npm i -D playwright && node scripts/make-pdf.mjs
+import { chromium } from "playwright";
+
+const browser = await chromium.launch();
+const page = await browser.newPage();
+await page.goto("http://localhost:3000/deck", { waitUntil: "networkidle" });
+await page.pdf({
+  path: "public/amanalink-deck.pdf",
+  printBackground: true,
+  preferCSSPageSize: true,
+  margin: { top: 0, right: 0, bottom: 0, left: 0 },
+});
+await browser.close();
+```
+
 ## What to try
 
 - **Tabs** — Overview, Deal flow, Disputes, Delivery paths, Trust & safety,
@@ -61,6 +126,8 @@ npm start
   `localStorage`; the theme is applied before first paint.
 - **Mobile** — resize to a phone width; layout, phone mockup and stepper all
   adapt. `prefers-reduced-motion` turns animations off.
+- **PDF** — the header downloads the plan summary; the footer also links the
+  prototype brief. `/deck` is the print-ready source of the brief.
 
 ## Rules the demo encodes
 
@@ -124,7 +191,8 @@ instead of throwing. Guard codes are translated through `lib/copy.ts`.
 app/
   layout.tsx           metadata, theme boot script, shell
   page.tsx             LangProvider + DemoApp
-  globals.css          Tailwind v4 theme tokens, light/dark, animations
+  deck/page.tsx        print-ready A4 brief source (/deck)
+  globals.css          Tailwind v4 theme tokens, light/dark, print CSS
 components/
   DemoApp.tsx          banner, header, tabs, hash + arrow-key navigation
   Tabs.tsx             ARIA tablist with roving focus
@@ -139,6 +207,7 @@ components/
   DeliveryTab.tsx      platform vs own courier comparison
   TrustTab.tsx         guarantees and hard limits for AI
   RoadmapTab.tsx       phases by dependency, timelines TBD
+  Deck.tsx             seven-page PDF brief layout
   LangProvider.tsx     EN/SW context
   LangToggle.tsx       EN / SW switch
   ThemeToggle.tsx      light / dark switch
@@ -155,6 +224,9 @@ lib/
   preferences.ts       persisted language/theme (useSyncExternalStore)
   tabs.ts              tab ids and labels
   useHashTab.ts        URL hash ↔ active tab
+public/
+  escrow-platform-summary.pdf  5-page plan summary (header download)
+  amanalink-deck.pdf          7-page prototype brief (footer download)
 ```
 
 ## Tests

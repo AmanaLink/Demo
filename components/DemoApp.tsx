@@ -14,7 +14,7 @@ import { Tabs } from "./Tabs";
 import { ThemeToggle } from "./ThemeToggle";
 import { TrustTab } from "./TrustTab";
 import { useLang } from "./LangProvider";
-import { ShieldIcon } from "./ui";
+import { DownloadIcon, ShieldIcon } from "./ui";
 
 export function DemoApp() {
   const { tr } = useLang();
@@ -97,6 +97,15 @@ export function DemoApp() {
             </span>
           </a>
           <div className="ml-auto flex items-center gap-2">
+            <a
+              href="/escrow-platform-summary.pdf"
+              download
+              aria-label={tr(ui.common.planSummary)}
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-line bg-surface px-2.5 text-[11px] font-medium text-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <DownloadIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{tr(ui.common.planSummaryShort)}</span>
+            </a>
             <LangToggle />
             <ThemeToggle />
           </div>
@@ -128,6 +137,20 @@ export function DemoApp() {
           <p className="max-w-2xl leading-relaxed">{tr(ui.footer.note)}</p>
           <div className="flex shrink-0 flex-wrap items-center gap-3">
             <span>{tr(ui.footer.built)}</span>
+            <a
+              href="/escrow-platform-summary.pdf"
+              download
+              className="underline decoration-line underline-offset-4 hover:text-ink"
+            >
+              {tr(ui.common.planSummary)}
+            </a>
+            <a
+              href="/amanalink-deck.pdf"
+              download
+              className="underline decoration-line underline-offset-4 hover:text-ink"
+            >
+              {tr(ui.common.prototypeBrief)}
+            </a>
             <a
               href="https://github.com/AmanaLink/Demo"
               target="_blank"

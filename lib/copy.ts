@@ -88,6 +88,11 @@ export const ui = {
     seeInFlow: L("See it in the deal flow", "Ione kwenye mtiririko"),
     verified: L("Verified", "Imethibitishwa"),
     all: L("All", "Zote"),
+    downloadPdf: L("Download PDF", "Pakua PDF"),
+    planSummary: L("Plan summary (PDF)", "Muhtasari wa mpango (PDF)"),
+    planSummaryShort: L("Plan summary", "Muhtasari"),
+    prototypeBrief: L("Prototype brief (PDF)", "Muhtasari wa mfano (PDF)"),
+    backToDemo: L("Back to the interactive demo", "Rudi kwenye demo"),
   },
 
   overview: {

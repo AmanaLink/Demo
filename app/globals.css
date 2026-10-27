@@ -97,3 +97,96 @@ body {
     animation: none;
   }
 }
+
+/* Printable brief at /deck ------------------------------------------------ */
+
+.deck {
+  --bg: #f6f7f6;
+  --surface: #ffffff;
+  --surface-2: #eef2f0;
+  --ink: #13201b;
+  --muted: #5c6b64;
+  --line: #dfe6e2;
+  --accent: #0f766e;
+  --accent-ink: #ffffff;
+  --chat: #ece9e2;
+  min-height: 100dvh;
+  background: #e7eae7;
+  color: var(--ink);
+}
+
+.deck-page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto 8mm;
+  padding: 14mm 15mm 10mm;
+  overflow: hidden;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: 0 14px 40px rgba(19, 32, 27, 0.1);
+}
+
+/* The brief is laid out at a slightly larger optical size for A4. */
+.deck-content {
+  zoom: 1.1;
+  width: calc(100% / 1.1);
+}
+
+@media screen and (max-width: 900px) {
+  .deck-page {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+  }
+
+  .deck-content {
+    zoom: 1;
+    width: auto;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  .deck {
+    background: #ffffff;
+  }
+
+  .deck main {
+    padding: 0 !important;
+  }
+
+  .deck-page {
+    margin: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .deck-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
