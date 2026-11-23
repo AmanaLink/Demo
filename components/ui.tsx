@@ -280,3 +280,9 @@ export const DownloadIcon = ({ className }: IconProps) => (
     <path d="M4 20h16" />
   </Svg>
 );
+
+export const XIcon = ({ className }: IconProps) => (
+  <Svg className={className}>
+    <path d="M18 6L6 18M6 6l12 12" />
+  </Svg>
+);

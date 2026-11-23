@@ -83,6 +83,17 @@ body {
   }
 }
 
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .animate-fade-up {
   animation: fade-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
@@ -91,9 +102,14 @@ body {
   animation: bubble-in 0.22s ease-out both;
 }
 
+.animate-slide-in-left {
+  animation: slide-in-left 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
-  .animate-bubble {
+  .animate-bubble,
+  .animate-slide-in-left {
     animation: none;
   }
 }

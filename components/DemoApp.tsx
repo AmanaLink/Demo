@@ -11,10 +11,14 @@ import { LangToggle } from "./LangToggle";
 import { OverviewTab } from "./OverviewTab";
 import { RoadmapTab } from "./RoadmapTab";
 import { Tabs } from "./Tabs";
+import { TabAnimator } from "./TabAnimator";
 import { ThemeToggle } from "./ThemeToggle";
 import { TrustTab } from "./TrustTab";
 import { useLang } from "./LangProvider";
 import { DownloadIcon, ShieldIcon } from "./ui";
+import { PresentationToolbar } from "./PresentationToolbar";
+import { ShortcutsHint } from "./ShortcutsHint";
+import { PresenterView } from "./PresenterView";
 
 export function DemoApp() {
   const { tr } = useLang();
@@ -121,16 +125,20 @@ export function DemoApp() {
         tabIndex={-1}
         className="mx-auto w-full max-w-6xl flex-1 px-4 pb-12 pt-6 outline-none sm:px-6"
       >
-        <section
-          key={tab}
-          id={`panel-${tab}`}
-          role="tabpanel"
-          aria-labelledby={`tab-${tab}`}
-          className="animate-fade-up"
-        >
-          {panel}
-        </section>
+        <TabAnimator tabId={tab}>
+          <section
+            key={tab}
+            id={`panel-${tab}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${tab}`}
+            className="animate-fade-up"
+          >
+            {panel}
+          </section>
+        </TabAnimator>
       </main>
+
+      <PresentationToolbar />
 
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-[11px] text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -162,6 +170,8 @@ export function DemoApp() {
           </div>
         </div>
       </footer>
+      <ShortcutsHint />
+      <PresenterView />
     </>
   );
 }
